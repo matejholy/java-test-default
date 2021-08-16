@@ -1,6 +1,7 @@
 package com.etnetera.hr.data;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Set;
 
 /**
@@ -21,6 +22,9 @@ public class JavaScriptFramework {
 
 	@OneToMany(mappedBy = "javaScriptFramework")
 	private Set<JavaScriptFrameworkVersion> version;
+
+	@Column
+	private LocalDate deprecationDate;
 
 	public JavaScriptFramework() {
 	}
@@ -53,8 +57,17 @@ public class JavaScriptFramework {
 		this.version = version;
 	}
 
+	public LocalDate getDeprecationDate() {
+		return deprecationDate;
+	}
+
+	public void setDeprecationDate(LocalDate deprecationDate) {
+		this.deprecationDate = deprecationDate;
+	}
+
 	@Override
 	public String toString() {
-		return "JavaScriptFramework [id=" + id + ", name=" + name + "]";
+		return "JavaScriptFramework [id=" + id + ", name=" + name + ", deprecationDate=" + deprecationDate + "]";
 	}
+
 }
