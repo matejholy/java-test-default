@@ -8,7 +8,6 @@ import java.util.Set;
  * Simple data entity describing basic properties of every JavaScript framework.
  *
  * @author Etnetera
- *
  */
 @Entity
 public class JavaScriptFramework {
@@ -25,6 +24,9 @@ public class JavaScriptFramework {
 
 	@Column
 	private LocalDate deprecationDate;
+
+	@Column
+	private Float hypeLevel;
 
 	public JavaScriptFramework() {
 	}
@@ -65,9 +67,17 @@ public class JavaScriptFramework {
 		this.deprecationDate = deprecationDate;
 	}
 
+	public Float getHypeLevel() {
+		return hypeLevel;
+	}
+
+	public void setHypeLevel(Float hypeLevel) {
+		this.hypeLevel = hypeLevel;
+	}
+
 	@Override
 	public String toString() {
-		return "JavaScriptFramework [id=" + id + ", name=" + name + ", deprecationDate=" + deprecationDate + "]";
+		return "JavaScriptFramework [id=" + id + ", name=" + name + ", deprecationDate=" + deprecationDate + ", hypeLevel=" + hypeLevel + "]";
 	}
 
 }
