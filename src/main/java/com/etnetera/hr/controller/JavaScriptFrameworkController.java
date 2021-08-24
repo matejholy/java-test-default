@@ -18,6 +18,7 @@ import javax.validation.Valid;
  * @author Etnetera
  */
 @RestController
+@RequestMapping("/frameworks")
 public class JavaScriptFrameworkController {
 
 	private final JavaScriptFrameworkRepository frameWorkRepository;
@@ -29,12 +30,12 @@ public class JavaScriptFrameworkController {
 		this.versionRepository = versionRepository;
 	}
 
-	@GetMapping("/frameworks")
+	@GetMapping
 	public Iterable<JavaScriptFramework> frameworks() {
 		return frameWorkRepository.findAll();
 	}
 
-	@PostMapping("/frameworks")
+	@PostMapping
 	public JavaScriptFramework createFramework(@Validated(JavaScriptFrameworkRequestModel.INSERT.class)
 											   @RequestBody JavaScriptFrameworkRequestModel requestModel) {
 		// does the framework already exist?
@@ -60,7 +61,7 @@ public class JavaScriptFrameworkController {
 		return framework;
 	}
 
-	@PutMapping("/frameworks/{id}")
+	@PutMapping("/{id}")
 	public JavaScriptFramework updateFramework(@PathVariable Long id, @Validated(JavaScriptFrameworkRequestModel.UPDATE.class)
 	@RequestBody JavaScriptFrameworkRequestModel requestModel) {
 		return null;
