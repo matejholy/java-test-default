@@ -77,4 +77,16 @@ public class JavaScriptFrameworkController {
 			return ResponseEntity.ok(frameWorkRepository.save(framework));
 		}
 	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteFramework(@PathVariable Long id) {
+		Optional<JavaScriptFramework> frameworkOptional = frameWorkRepository.findById(id);
+
+		if (frameworkOptional.isEmpty())
+			return ResponseEntity.notFound().build();
+		else {
+			frameWorkRepository.deleteById(id);
+			return ResponseEntity.ok().build();
+		}
+	}
 }
