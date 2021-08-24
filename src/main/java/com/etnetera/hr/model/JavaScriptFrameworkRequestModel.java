@@ -8,10 +8,9 @@ import java.time.LocalDate;
 public class JavaScriptFrameworkRequestModel {
 
 	// validation groups
-	public interface INSERT {};
 	public interface UPDATE {};
 
-	@NotEmpty(groups = INSERT.class)
+	@NotEmpty
 	private String name;
 
 	@Null(groups = UPDATE.class)  // does not make sense to update version number using parent entity

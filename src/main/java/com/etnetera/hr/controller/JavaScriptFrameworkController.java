@@ -7,10 +7,11 @@ import com.etnetera.hr.model.JavaScriptFrameworkRequestModel;
 import com.etnetera.hr.repository.JavaScriptFrameworkRepository;
 import com.etnetera.hr.repository.JavaScriptFrameworkVersionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.util.Optional;
 
 /**
  * Simple REST controller for accessing application logic.
@@ -36,8 +37,7 @@ public class JavaScriptFrameworkController {
 	}
 
 	@PostMapping
-	public JavaScriptFramework createFramework(@Validated(JavaScriptFrameworkRequestModel.INSERT.class)
-											   @RequestBody JavaScriptFrameworkRequestModel requestModel) {
+	public JavaScriptFramework createFramework(@Validated @RequestBody JavaScriptFrameworkRequestModel requestModel) {
 		// does the framework already exist?
 		JavaScriptFramework framework = frameWorkRepository.findFirstByNameIgnoreCase(requestModel.getName());
 
@@ -62,8 +62,19 @@ public class JavaScriptFrameworkController {
 	}
 
 	@PutMapping("/{id}")
-	public JavaScriptFramework updateFramework(@PathVariable Long id, @Validated(JavaScriptFrameworkRequestModel.UPDATE.class)
-	@RequestBody JavaScriptFrameworkRequestModel requestModel) {
-		return null;
+	public ResponseEntity<JavaScriptFramework> updateFramework(@PathVariable Long id,
+															   @Validated(JavaScriptFrameworkRequestModel.UPDATE.class)
+															   @RequestBody JavaScriptFrameworkRequestModel requestModel) {
+		Optional<JavaScriptFramework> frameworkOptional = frameWorkRepository.findById(id);
+
+		if (frameworkOptional.isEmpty())
+			return ResponseEntity.notFound().build();
+		else {
+			JavaScriptFramework framework = frameworkOptional.get();
+			framework.setName(requestModel.getName());
+			framework.setDeprecationDate(requestModel.getDeprecationDate());
+			framework.setHypeLevel(requestModel.getHypeLevel());
+			return ResponseEntity.ok(frameWorkRepository.save(framework));
+		}
 	}
 }
