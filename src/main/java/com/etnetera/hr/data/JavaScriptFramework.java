@@ -1,6 +1,7 @@
 package com.etnetera.hr.data;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -19,14 +20,14 @@ public class JavaScriptFramework {
 	@Column(nullable = false, length = 30)
 	private String name;
 
-	@OneToMany(mappedBy = "javaScriptFramework")
+	@OneToMany(mappedBy = "javaScriptFramework", cascade = CascadeType.ALL)
 	private Set<JavaScriptFrameworkVersion> version;
 
 	@Column
 	private LocalDate deprecationDate;
 
 	@Column
-	private Float hypeLevel;
+	private BigDecimal hypeLevel;
 
 	public JavaScriptFramework() {
 	}
@@ -67,11 +68,11 @@ public class JavaScriptFramework {
 		this.deprecationDate = deprecationDate;
 	}
 
-	public Float getHypeLevel() {
+	public BigDecimal getHypeLevel() {
 		return hypeLevel;
 	}
 
-	public void setHypeLevel(Float hypeLevel) {
+	public void setHypeLevel(BigDecimal hypeLevel) {
 		this.hypeLevel = hypeLevel;
 	}
 

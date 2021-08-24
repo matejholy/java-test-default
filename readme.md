@@ -5,3 +5,15 @@
 ### JavaScriptFramework
 
 Assuming that each framework is represented by a single record with multiple versions and only a single hype level.
+
+## Controller
+
+### Creating an entity
+
+Assuming that we always create framework with a single version only. Currently the controller does not allow creating a framework with multiple versions at once.
+
+Sample request to create a new framework version:
+
+```json
+{ "name": "React", "version": "1.3", "deprecationDate": "2100-12-01", "hypeLevel": 4.2 }
+```

@@ -1,11 +1,18 @@
 package com.etnetera.hr.controller;
 
+import com.etnetera.hr.data.JavaScriptFramework;
+import com.etnetera.hr.data.JavaScriptFrameworkVersion;
+import com.etnetera.hr.mapper.JavaScriptFrameworkModelToEntityMapper;
+import com.etnetera.hr.model.JavaScriptFrameworkRequestModel;
+import com.etnetera.hr.repository.JavaScriptFrameworkRepository;
+import com.etnetera.hr.repository.JavaScriptFrameworkVersionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.etnetera.hr.data.JavaScriptFramework;
-import com.etnetera.hr.repository.JavaScriptFrameworkRepository;
+import javax.validation.Valid;
 
 /**
  * Simple REST controller for accessing application logic.
@@ -16,16 +23,42 @@ import com.etnetera.hr.repository.JavaScriptFrameworkRepository;
 @RestController
 public class JavaScriptFrameworkController {
 
-	private final JavaScriptFrameworkRepository repository;
+	private final JavaScriptFrameworkRepository frameWorkRepository;
+	private final JavaScriptFrameworkVersionRepository versionRepository;
 
 	@Autowired
-	public JavaScriptFrameworkController(JavaScriptFrameworkRepository repository) {
-		this.repository = repository;
+	public JavaScriptFrameworkController(JavaScriptFrameworkRepository repository, JavaScriptFrameworkVersionRepository versionRepository) {
+		this.frameWorkRepository = repository;
+		this.versionRepository = versionRepository;
 	}
 
 	@GetMapping("/frameworks")
 	public Iterable<JavaScriptFramework> frameworks() {
-		return repository.findAll();
+		return frameWorkRepository.findAll();
 	}
 
+	@PostMapping("/frameworks")
+	public JavaScriptFramework createFramework(@Valid @RequestBody JavaScriptFrameworkRequestModel requestModel) {
+		// does the framework already exist?
+		JavaScriptFramework framework = frameWorkRepository.findFirstByNameIgnoreCase(requestModel.getName());
+
+		if (framework == null) {
+			framework = JavaScriptFrameworkModelToEntityMapper.requestModelToEntity(requestModel);
+			framework = frameWorkRepository.save(framework);
+		} else if (requestModel.getVersion() != null) {
+			// insert version only, if present in request but not in database
+			JavaScriptFrameworkVersion version = versionRepository.findFirstByJavaScriptFrameworkAndVersionNumber(framework, requestModel.getVersion());
+			if (version == null) {
+				version = new JavaScriptFrameworkVersion();
+				version.setJavaScriptFramework(framework);
+				version.setVersionNumber(requestModel.getVersion());
+				framework.getVersion().add(version);
+				framework = frameWorkRepository.save(framework);
+			}
+
+			// TODO return error when request contains other attributes than name and version
+		}
+
+		return framework;
+	}
 }

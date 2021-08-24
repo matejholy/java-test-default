@@ -1,5 +1,7 @@
 package com.etnetera.hr.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 /**
@@ -20,6 +22,7 @@ public class JavaScriptFrameworkVersion {
 
 	@ManyToOne
 	@JoinColumn(name = "java_script_framework_id")
+	@JsonIgnore
 	private JavaScriptFramework javaScriptFramework;
 
 	public JavaScriptFrameworkVersion() {
