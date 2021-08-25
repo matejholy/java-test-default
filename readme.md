@@ -17,3 +17,7 @@ Sample request to create a new framework version:
 ```json
 { "name": "React", "version": "1.3", "deprecationDate": "2100-12-01", "hypeLevel": 4.2 }
 ```
+
+### Searching entities
+
+Searching frameworks by part of their name (case-insensitive) is implemented at `/frameworks/search?name=some_text`.

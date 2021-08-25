@@ -7,6 +7,7 @@ import com.etnetera.hr.model.JavaScriptFrameworkRequestModel;
 import com.etnetera.hr.repository.JavaScriptFrameworkRepository;
 import com.etnetera.hr.repository.JavaScriptFrameworkVersionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -88,5 +89,10 @@ public class JavaScriptFrameworkController {
 			frameWorkRepository.deleteById(id);
 			return ResponseEntity.ok().build();
 		}
+	}
+
+	@GetMapping("/search")
+	public Iterable<JavaScriptFramework> findFramework(@RequestParam String name) {
+		return frameWorkRepository.findByStringInNameIgnoreCase(name, Sort.by("name"));
 	}
 }
