@@ -21,3 +21,9 @@ Sample request to create a new framework version:
 ### Searching entities
 
 Searching frameworks by part of their name (case-insensitive) is implemented at `/frameworks/search?name=some_text`.
+
+### Deleting a framework version
+
+There is a separate endpoint for deleting framework versions. Otherwise there's no way of deleting a version without deleting the whole framework.
+
+The endpoint is available at `/frameworks/versions/{version_id}`.

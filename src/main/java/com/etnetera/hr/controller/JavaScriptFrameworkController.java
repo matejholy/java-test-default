@@ -95,4 +95,16 @@ public class JavaScriptFrameworkController {
 	public Iterable<JavaScriptFramework> findFramework(@RequestParam String name) {
 		return frameWorkRepository.findByStringInNameIgnoreCase(name, Sort.by("name"));
 	}
+
+	@DeleteMapping("/versions/{id}")
+	public ResponseEntity<Void> deleteFrameworkVersion(@PathVariable Long id) {
+		Optional<JavaScriptFrameworkVersion> frameworkVersionOptional = versionRepository.findById(id);
+
+		if (frameworkVersionOptional.isEmpty())
+			return ResponseEntity.notFound().build();
+		else {
+			versionRepository.deleteById(id);
+			return ResponseEntity.ok().build();
+		}
+	}
 }
